@@ -39,7 +39,7 @@ public class SQLiteDatabaseHelper
 
     public Task<List<Produto>> Search(string query)
     {
-        string sql = "SELECT * FROM Produto WHERE Descricao LIKE '%'+'query'+'%'";
+        string sql = "SELECT * FROM Produto WHERE Descricao LIKE '%"+query+"%'";
         return _con.QueryAsync<Produto>(sql);
     }
 }
