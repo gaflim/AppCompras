@@ -20,10 +20,18 @@ public partial class ListaProduto : ContentPage
         lstProdutos.ItemsSource = Lista;
     }
     
-    protected async override void OnAppearing()
+    protected override async void OnAppearing()
     {
-        List<Produto> tmp = await App.Db.GetAll();
-        tmp.ForEach(i => Lista.Add(i));
+        try
+        {
+            Lista.Clear();
+            List<Produto> tmp = await App.Db.GetAll();
+            tmp.ForEach(i => Lista.Add(i));
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Algo deu errado", ex.Message, "Ok");
+        }
     }
     
     private void AddNew(object? sender, EventArgs e)
@@ -49,7 +57,7 @@ public partial class ListaProduto : ContentPage
         }
         catch(Exception ex)
         {
-            DisplayAlert("Algo deu errado", ex.Message, "Ok");
+            await DisplayAlert("Algo deu errado", ex.Message, "Ok");
         }
     }
 
@@ -60,8 +68,39 @@ public partial class ListaProduto : ContentPage
         DisplayAlert("Total dos Produtos", msg, "Ok");
     }
 
-    private void Remover(object? sender, EventArgs e)
+    private async void Remover(object? sender, EventArgs e)
     {
-        
+        try
+        {
+            MenuItem? selecionado = sender as MenuItem;
+            Produto p = selecionado.BindingContext as Produto;
+            bool confirm = await DisplayAlert("Tem Certeza?", $"Remover {p.Descricao}?", "Sim", "Não");
+
+            if (confirm)
+            {
+                await App.Db.Delete(p.Id);
+                Lista.Remove(p);
+            }
+        } 
+        catch (Exception ex)
+        {
+            await DisplayAlert("Algo deu errado", ex.Message, "Ok");
+        }
+    }
+
+    private void LstProdutos_OnItemSelected(object? sender, SelectedItemChangedEventArgs e)
+    {
+        try
+        {
+            Produto? p = e.SelectedItem as Produto;
+            Navigation.PushAsync(new EditarProduto
+            {
+                BindingContext = p,
+            });
+        }
+        catch (Exception ex)
+        {
+            DisplayAlert("Algo deu errado", ex.Message, "Ok");
+        }
     }
 }
