@@ -6,6 +6,16 @@
              Title="{Binding Descricao}">
     <ContentPage.Content>
         <VerticalStackLayout Spacing="10" Padding="10">
+            <Picker x:Name="categoria" 
+                    Title="Categoria" 
+                    Margin="15, 15, 15, 0">
+                <Picker.Items>
+                    <x:String>Alimentos</x:String>
+                    <x:String>Higiene</x:String>
+                    <x:String>Limpeza</x:String>
+                </Picker.Items>
+            </Picker>
+            
             <Label Text="Descrição do Produto:"/>
             <Entry x:Name="txt_descricao" Text="{Binding Descricao}"/>
             

@@ -1,4 +1,5 @@
-﻿using AppCompras.Helpers;
+﻿using System.Globalization;
+using AppCompras.Helpers;
 using AppCompras.View;
 
 namespace AppCompras;
@@ -26,6 +27,8 @@ public partial class App : Application
     {
         InitializeComponent();
 
+        Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-br");
+        
         MainPage = new NavigationPage(new ListaProduto());
     }
 }

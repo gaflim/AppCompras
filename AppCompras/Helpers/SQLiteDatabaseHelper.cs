@@ -20,10 +20,10 @@ public class SQLiteDatabaseHelper
 
     public Task<List<Produto>> Update(Produto p)
     {
-        string sql = "UPDATE Produto SET Descricao=?, Quantidade=?, Preco=? WHERE Id=?";
+        var sql = "UPDATE Produto SET Categoria=?, Descricao=?, Quantidade=?, Preco=? WHERE Id=?";
         
         return _con.QueryAsync<Produto>(
-            sql, p.Descricao, p.Quantidade, p.Preco, p.Id
+            sql, p.Categoria, p.Descricao, p.Quantidade, p.Preco, p.Id
         );
     }
 
@@ -39,7 +39,25 @@ public class SQLiteDatabaseHelper
 
     public Task<List<Produto>> Search(string query)
     {
-        string sql = "SELECT * FROM Produto WHERE Descricao LIKE '%"+query+"%'";
+        var sql = "SELECT * FROM Produto WHERE Descricao LIKE '%"+query+"%'";
         return _con.QueryAsync<Produto>(sql);
+    }
+    
+    public Task<List<Produto>> SearchByCat(string q)
+    {
+        var sql = "SELECT * FROM Produto WHERE Categoria = '"+q+"'";
+        return _con.QueryAsync<Produto>(sql);
+    }
+    
+    public Task<List<dynamic>> ShowCats()
+    {
+        var sql = "SELECT Categoria FROM Produto GROUP BY Categoria";
+        return _con.QueryAsync<dynamic>(sql);
+    }
+    
+    public Task<List<Produto>> GetCat(string categoria)
+    {
+        string sql = "SELECT * FROM Produto WHERE Categoria = ?";
+        return _con.QueryAsync<Produto>(sql, categoria);
     }
 }

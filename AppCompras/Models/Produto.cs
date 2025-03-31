@@ -8,10 +8,21 @@ using SQLite;
 public class Produto
 {
     private string? _descricao;
-    
+    private string? _categoria;
     [PrimaryKey, AutoIncrement]
     public int Id { get; set; }
 
+    
+    public string? Categoria
+    {
+        get => _categoria;
+        set
+        {
+            if (value == null) 
+                throw new Exception("Preencha a categoria");
+            _categoria = value;
+        }
+    }
     public string Descricao
     {
         get => _descricao;

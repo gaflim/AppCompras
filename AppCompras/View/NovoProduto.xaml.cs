@@ -20,6 +20,7 @@ public partial class NovoProduto : ContentPage
         {
             Produto p = new Produto
             {
+                Categoria = categoria.SelectedItem.ToString(),
                 Descricao = txt_descricao.Text,
                 Quantidade = Convert.ToDouble(txt_qnt.Text),
                 Preco = Convert.ToDouble(txt_preco.Text)
@@ -30,7 +31,7 @@ public partial class NovoProduto : ContentPage
         }
         catch (Exception ex)
         {
-            DisplayAlert("Algo deu errado", ex.Message, "Ok");
+            await DisplayAlert("Algo deu errado", ex.Message, "Ok");
         }
     }
 }
